@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+  postgres:
+    container_name: cort_gurd_task_vu_postgres
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: cort_gurd_task_vu
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - cort_gurd_task_vu_network
+volumes:
+  pgdata:
+networks:
+  cort_gurd_task_vu_network:
