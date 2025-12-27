@@ -1,4 +1,5 @@
 import { IsBoolean, IsInt, IsNotEmpty, IsString, Max } from 'class-validator';
+import { Genre } from '../entities/movie.entity';
 
 export class CreateMovieDto {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -20,7 +21,7 @@ export class CreateMovieDto {
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   @IsString()
-  genre: string;
+  genre: Genre;
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   @IsBoolean()
