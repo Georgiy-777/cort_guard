@@ -1,4 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-tasak.dto';
 
 @Injectable()
 export class TaskService {
@@ -18,24 +20,47 @@ export class TaskService {
   ];
 
   findAll() {
-    return;
+    return this.tasks;
   }
 
   findById(id: number) {
-    if (!this.tasks.find((task) => task.id === id)) {
+    const task = this.tasks.find((task) => task.id === id);
+    if (!task) {
       throw new NotFoundException('Task not found');
     }
-    return this.tasks.find((task) => task.id === id);
+    return task;
   }
 
-  create() {
+  create(dto: CreateTaskDto) {
     const newTask = {
       id: this.tasks.length + 1,
-      title: `New Task ${this.tasks.length + 1}`,
-      description: '',
-      completed: false,
+      title: dto.title,
+      description: dto.description,
+      completed: dto.completed,
     };
     this.tasks.push(newTask);
     return this.tasks;
+  }
+
+  update(id: number, dto: UpdateTaskDto) {
+    const task = this.findById(id);
+    Object.assign(task, dto);
+
+    return task;
+  }
+
+  patchUpdate(id: number, dto: Partial<UpdateTaskDto>) {
+    const task = this.findById(id);
+    Object.assign(task, dto);
+    return task;
+  }
+
+  delete(id: number) {
+    const index = this.tasks.findIndex((task) => task.id === id);
+    if (index === -1) {
+      throw new NotFoundException('Task not found');
+    }
+    const deletedTask = this.tasks.splice(index, 1);
+    return deletedTask[0];
   }
 }
